@@ -16,7 +16,7 @@
 
 <script setup>
 import {ref} from 'vue'
-import {listData} from "../../assets/staticData/tabBar";
+import {listData} from "../../assets/data/tabBar";
 import {getAssetsImg} from "../../utils/getAssets";
 import {useRouter} from "vue-router";
 
