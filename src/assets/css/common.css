@@ -1,3 +1,7 @@
+:root {
+    --primary-color: #ff9645
+}
+
 body {
     font-size: 14px;
 }

@@ -1,16 +1,10 @@
 <template>
-    <router-view></router-view>
-
-    <router-link to="/home">home</router-link>
-    <router-link to="/favorites">favorites</router-link>
-    <router-link to="/cart">cart</router-link>
-    <router-link to="/message">message</router-link>
+    <div>
+        <router-view></router-view>
+        <tab-bar></tab-bar>
+    </div>
 </template>
 
-<script>
-
-export default {
-    name: 'App',
-    components: {}
-}
+<script setup>
+import TabBar from "./components/TabBar/tabBar.vue";
 </script>
