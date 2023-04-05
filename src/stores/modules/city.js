@@ -4,7 +4,8 @@ import {getCityAllApi} from '../../server'
 export const useCityStore = defineStore('city', {
     state: () => {
         return {
-            cityData: {}
+            cityData: {},
+            currentData: {cityName: '山西'}  //我的位置暂不能用 先写死
         }
     },
     actions: {

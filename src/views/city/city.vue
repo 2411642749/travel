@@ -22,11 +22,11 @@
             2: 头部不动，内容区域内部滚动。动态计算（cacl）高度，超出y轴出现滚动条。
                -->
         <div class="center">
-            <template v-for="(item,index) in filterData?.cities">
-                <div>{{ item }}</div>
+            <!-- 拿所有的数据动态渲染根据点击的值和TabValue相比较来进行显示  -->
+            <template v-for="(v,k,i) in cityData" :key="i">
+                <city-group :group-data="v" v-show="k === TabValue"/>
             </template>
         </div>
-
     </div>
 </template>
 
@@ -35,6 +35,7 @@ import {computed, ref} from 'vue'
 import {useCityStore} from "../../stores/modules/city";
 import {useRouter} from "vue-router";
 import {storeToRefs} from "pinia";
+import CityGroup from "./components/city-group.vue";
 
 const router = useRouter()
 // 搜索
