@@ -20,6 +20,6 @@
 .nav-bar span {
     color: var(--primary-color);
     font-size: 20px;
-    font-width: 500;
+    font-weight: 500;
 }
 </style>

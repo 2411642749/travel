@@ -46,6 +46,7 @@ const itemClick = (item, index) => {
     justify-content: center;
     align-items: center;
     font-size: 12px;
+    background-color: #fff;
 }
 
 .active {

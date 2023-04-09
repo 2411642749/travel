@@ -1,6 +1,6 @@
 <template>
     <div class="position">
-        <div class="position_top">
+        <div class="grey-line position_top">
             <div class="position_top——left">
                 <span @click="cityClick">{{ cityName.cityName }}</span>
             </div>
@@ -10,7 +10,7 @@
             </div>
         </div>
         <!--    入住    -->
-        <div class="checkin" @click="showDate = true">
+        <div class="grey-line checkin" @click="showDate = true">
             <div class="start">
                 <span>入住</span>
                 <div>{{ startDate }}</div>
@@ -31,32 +31,40 @@
         <div class="limit grey-line"><span>关键字/位置/名宿名</span></div>
         <!--    热门建议    -->
         <div class="hotSuggests">
-            <template v-for="(item ,index) in hotSuggests" :key="index">
-                <div
-                        class="item"
-                        :style="{background : item.tagText.background.color, color : item.tagText.color}">
+            <template v-for="(item, index) in hotSuggests" :key="index">
+                <div class="item" :style="{ background: item.tagText.background.color, color: item.tagText.color }">
                     {{ item.tagText.text }}
                 </div>
             </template>
         </div>
+        <!--   开始搜索  -->
+        <div class="search">
+            <div class="search-btn" @click="searhClick">
+                开始搜索
+            </div>
+        </div>
+        <!-- 分类  -->
+        <div class="houseType">
+            <template v-for="item in houseType" :key="item.id">
+                <div class="item">
+                    <img :src="item.pictureUrl" alt="">
+                    <span>{{ item.title }}</span>
+                </div>
+            </template>
+        </div>
     </div>
-  <!--  日期  -->
-    <van-calendar
-            v-model:show="showDate"
-            color="#ff9645"
-            :show-confirm="false"
-            type="range"
-            @confirm="onConfirm"
-    />
+    <!--  日期  -->
+    <van-calendar v-model:show="showDate" color="#ff9645" :show-confirm="false" type="range" @confirm="onConfirm" />
 </template>
 
 <script setup>
-import {ref} from 'vue'
-import {useRouter} from "vue-router";
-import {useCityStore} from "../../../stores/modules/city";
-import {diffDate, formatMonthDay} from "../../../utils/format-date";
-import {useHomeStore} from "../../../stores/modules/home";
-import {storeToRefs} from "pinia";
+import { ref ,computed} from 'vue'
+import { useRouter } from "vue-router";
+import { useCityStore } from "../../../stores/modules/city";
+import { diffDate, formatMonthDay } from "../../../utils/format-date";
+import { useHomeStore } from "../../../stores/modules/home";
+import { useMainStore } from "../../../stores/main"
+import { storeToRefs } from "pinia";
 
 const router = useRouter()
 const cityStore = useCityStore()
@@ -76,28 +84,35 @@ const positionClick = () => {
 // 城市名字
 const cityName = cityStore.currentData
 // 入住时间
-const nowData = new Date()
-const startDate = ref(formatMonthDay(nowData))
-const newtData = nowData.setDate(nowData.getDate() + 1)
-const endDate = ref(formatMonthDay(newtData))
+const mainStore = useMainStore()
+const {nowDate,newDate} = storeToRefs(mainStore)
+const startDate = computed(() =>formatMonthDay(nowDate.value))
+const endDate = computed(() =>formatMonthDay(newDate.value))
 
 // 点击入住
 const showDate = ref(false)
 const time = ref(1)
 const onConfirm = (data) => {
-    startDate.value = formatMonthDay(data[0])
-    endDate.value = formatMonthDay(data[1])
+    console.log(nowDate);
+    nowDate.value = formatMonthDay(data[0])
+    newDate.value = formatMonthDay(data[1])
     time.value = diffDate(startDate.value, endDate.value)
     showDate.value = false
 }
 
 // 热门建议
 const homeStore = useHomeStore()
-const {hotSuggests} = storeToRefs(homeStore)
+const { hotSuggests, houseType } = storeToRefs(homeStore)
+
+// 开始搜索
+const searhClick = () => {
+    router.push({
+        path: '/search'
+    })
+}
 </script>
 
 <style scoped>
-
 .position_top {
     height: 44px;
     display: flex;
@@ -170,5 +185,45 @@ const {hotSuggests} = storeToRefs(homeStore)
     margin: 4px 6px;
     border-radius: 14px;
     font-size: 12px;
+}
+
+.search {
+    padding: 0 15px;
+    margin: 10px 0;
+}
+
+.search-btn {
+    letter-spacing: 3px;
+    height: 38px;
+    text-align: center;
+    line-height: 38px;
+    border-radius: 20px;
+    color: #fff;
+    background-image: linear-gradient(90deg, #ff971f, #ffa932);
+}
+
+.houseType {
+    display: flex;
+    overflow-x: auto;
+    padding: 0 10px;
+}
+
+.houseType::-webkit-scrollbar {
+  display: none; 
+}
+
+.houseType .item {
+    flex-shrink: 0;
+    width: 70px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.houseType .item img {
+    width: 32px;
+    height: 32px;
+    margin-bottom: 3px;
 }
 </style>
