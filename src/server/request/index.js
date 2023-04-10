@@ -20,13 +20,30 @@
 // export default request
 
 import axios from 'axios'
+import { useMainStore } from '../../stores/main'
 
+const mainStore = useMainStore()
 class Request {
     constructor(baseURL, timeout = 10000) {
         this.instance = axios.create({
             baseURL,
             timeout
         })
+        this.instance.interceptors.request.use(config => {
+            mainStore.isLoading = true
+            return config
+        }, err => {
+            mainStore.isLoading = false
+            return err
+        })
+        this.instance.interceptors.response.use(res => {
+            mainStore.isLoading = false
+            return res
+        }, err => {
+            mainStore.isLoading = false
+            return err
+        })
+
     }
 
     request(config) {

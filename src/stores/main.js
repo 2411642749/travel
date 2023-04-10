@@ -7,7 +7,8 @@ export const useMainStore = defineStore('main', {
     state: () => {
         return {
             nowDate,
-            newDate
+            newDate,
+            isLoading : false
         }
     }
 })

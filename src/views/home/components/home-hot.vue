@@ -3,8 +3,8 @@
    <h2>热门精选</h2>
    <div class="content">
     <template v-for="item in hotData" :key="item.data.houseId">
-      <searchT9 v-if="item.discoveryContentType === 9" :list-data="item.data"/>
-      <searchT3 v-else :list-data="item.data"/>
+      <searchT9 v-if="item.discoveryContentType === 9" :list-data="item.data" @click="itemClick(item.data.houseId)"/>
+      <searchT3 v-else :list-data="item.data" @click="itemClick(item.data.houseId)"/>
     </template>
    </div>
   </div>
@@ -17,6 +17,7 @@ import { storeToRefs } from 'pinia';
 import searchT3 from './hoem-search-type/search-t3.vue'
 import searchT9 from './hoem-search-type/search-t9.vue'
 import { scrollListenFn } from '../../../hooks/scroll'
+import { useRouter } from 'vue-router';
 
 const homeStore = useHomeStore()
 const { hotData } = storeToRefs(homeStore)
@@ -30,6 +31,13 @@ watch(isScrollLoz,(newValue) => {
     })
   }
 })
+
+const router = useRouter()
+const itemClick = (houseId) => {
+  router.push({
+    path :'/detail/' + houseId
+  })
+}
 </script>
 
 <style scoped>
