@@ -1,4 +1,4 @@
-<template
+<template>
   <div class="detail"> 
     <van-nav-bar
       title="旅途"
@@ -6,20 +6,27 @@
       left-arrow
       @click-left="onClickLeft"
     />
-
-    ID:{{ route.params.id }}
+    <div class="concent" v-if="houseList">
+      <swipe :swipe-data="houseList.mainPart.topModule.housePicture.housePics"/>
+    </div>
+    <!-- ID:{{ route.params.id }} -->
+  </div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
 import { useRouter,useRoute } from 'vue-router';
-
+import { useHouseListStore } from './../../stores/modules/house-list'
+import swipe from './compontents/swipe.vue'; 
+import { storeToRefs } from 'pinia';
 const router = useRouter()
 const route = useRoute()
 const onClickLeft = () => {
   router.back()
-
 }
+const  housListStore = useHouseListStore()
+const { houseList } = storeToRefs(housListStore)
+housListStore.getHouseListApi({houseId : route.params.id})
 </script>
 
 <style scoped>
