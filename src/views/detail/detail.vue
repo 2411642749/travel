@@ -7,7 +7,7 @@
       @click-left="onClickLeft"
     />
     <div class="concent" v-if="houseList">
-      <swipe :swipe-data="houseList.mainPart.topModule.housePicture.housePics"/>
+      <swipe :swipe-data="houseList.mainPart?.topModule.housePicture.housePics"/>
     </div>
     <!-- ID:{{ route.params.id }} -->
   </div>
@@ -25,8 +25,8 @@ const onClickLeft = () => {
   router.back()
 }
 const  housListStore = useHouseListStore()
-const { houseList } = storeToRefs(housListStore)
 housListStore.getHouseListApi({houseId : route.params.id})
+const { houseList } = storeToRefs(housListStore)
 </script>
 
 <style scoped>
