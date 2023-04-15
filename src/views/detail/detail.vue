@@ -9,7 +9,6 @@
     <div class="concent" v-if="houseList">
       <swipe :swipe-data="houseList.mainPart?.topModule.housePicture.housePics"/>
     </div>
-    <!-- ID:{{ route.params.id }} -->
   </div>
 </template>
 

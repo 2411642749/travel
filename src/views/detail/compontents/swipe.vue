@@ -7,9 +7,16 @@
         </van-swipe-item>
       </template>
        <template #indicator="{ active, total }">
+        <div class="custom-indicator">
           <template v-for="(value,key,index) in swipeObj" :key="key">
-            <span>{{ getName(value[0].title) }} </span>
+              <span :class="{active : swipeData[active]?.enumPictureCategory == key}"> 
+                {{ getName(value[0].title) }} 
+                <span class="count" v-if="swipeData[active]?.enumPictureCategory == key">
+                  {{getIndex(swipeData[active])}}/{{ value.length }} 
+                </span>
+              </span>
           </template>
+        </div>
         </template>
     </van-swipe>
   </div>
@@ -38,7 +45,11 @@ props.swipeData.forEach(item => {
 const getName = (name) => {
   const reg = /[\u4e00-\u9fa5]/g;
   return name.match(reg).join('');
-  
+}
+const getIndex = (item) => {
+  // console.log(item.enumPictureCategory);
+  // console.log(swipeObj['2'].findIndex(data => data === item));
+  return swipeObj[item.enumPictureCategory].findIndex(data => data === item) + 1
 }
 </script>
 
@@ -49,6 +60,23 @@ const getName = (name) => {
     bottom: 5px;
     padding: 2px 5px;
     font-size: 12px;
-    background: rgba(0, 0, 0, 0.1);
+    background: rgba(0, 0, 0, 0.3);
+  }
+  .custom-indicator span {
+    margin: 0 5px;
+    color: #fff;
+  }
+
+  .custom-indicator .active {
+    display: inline-block;
+    background-color: #fff;
+    color: #333;
+    padding: 0 3px;
+    border-radius: 5px;
+  }
+
+  .custom-indicator .count {
+    color: #333;
+    margin: 0;
   }
 </style>
